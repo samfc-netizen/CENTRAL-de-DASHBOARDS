@@ -1,6 +1,7 @@
 import hashlib
 import html
 import json
+import textwrap
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
@@ -493,6 +494,64 @@ def searchable(item):
 
 
 
+
+@st.dialog("Acesso protegido")
+def solicitar_senha_acao(
+    nome: str,
+    url: str,
+    acao: str,
+    item_hash: str,
+) -> None:
+    """Solicita senha antes de executar uma ação em painel protegido."""
+
+    st.markdown(f"**{html.escape(nome)}**")
+    st.caption(
+        "Este painel possui acesso protegido. "
+        "Digite a senha para continuar."
+    )
+
+    senha_digitada = st.text_input(
+        "Senha",
+        type="password",
+        key=f"senha_dialog_{item_hash}_{acao}",
+        placeholder="Digite a senha de acesso",
+    )
+
+    validar = st.button(
+        "Validar senha",
+        key=f"validar_dialog_{item_hash}_{acao}",
+        type="primary",
+        use_container_width=True,
+    )
+
+    if validar:
+        if senha_digitada != PAINEL_PASSWORD:
+            st.error("Senha incorreta.")
+            return
+
+        st.success("Senha validada.")
+
+        if acao == "acessar":
+            st.link_button(
+                "Continuar para o painel",
+                url,
+                type="primary",
+                use_container_width=True,
+            )
+
+        elif acao == "whatsapp":
+            st.link_button(
+                "Abrir no WhatsApp",
+                whatsapp_link(nome, url),
+                type="primary",
+                use_container_width=True,
+            )
+
+        elif acao == "copiar":
+            st.caption("Use o ícone de cópia no bloco abaixo:")
+            st.code(url, language=None, wrap_lines=True)
+
+
 data = load_data()
 
 dash_count = sum(x.get("tipo") == "Dashboard" for x in data)
@@ -605,8 +664,6 @@ for start in range(0, len(filtered), 4):
         development = bool(item.get("em_desenvolvimento", False))
         protected = bool(item.get("protegido", False))
         item_hash = hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
-        unlock_key = f"painel_desbloqueado_{item_hash}"
-        is_unlocked = bool(st.session_state.get(unlock_key, False))
 
         commit = github_last_commit(repo) if repo else {}
         updated = format_date(commit.get("date", ""))
@@ -625,8 +682,14 @@ for start in range(0, len(filtered), 4):
         tag_label = "Em desenvolvimento" if development else kind
         card_class = "portal-card featured" if featured else "portal-card"
 
-        with col:
-            st.markdown(f"""
+        security_html = (
+            "<strong>Segurança:</strong> 🔒 Acesso com senha<br>"
+            if protected
+            else ""
+        )
+
+        card_html = textwrap.dedent(
+            f"""
             <div class="{card_class}">
                 <div class="card-head">
                     <div class="icon-box">{html.escape(icon)}</div>
@@ -637,38 +700,60 @@ for start in range(0, len(filtered), 4):
                 <div class="card-meta">
                     {status_text}<br>
                     <strong>Área:</strong> {html.escape(category_name)}<br>
-                    {"<strong>Segurança:</strong> 🔒 Acesso com senha<br>" if protected else ""}
+                    {security_html}
                     <strong>Atualização:</strong> {update_text}{extra}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """
+        ).strip()
 
-            if protected and not is_unlocked:
-                with st.popover("🔒 Desbloquear painel", use_container_width=True):
-                    st.caption(
-                        "Informe a senha para abrir, copiar ou compartilhar este painel."
+        with col:
+            st.markdown(card_html, unsafe_allow_html=True)
+
+
+            if protected:
+                if st.button(
+                    "Acessar",
+                    key=f"acessar_{item_hash}",
+                    type="primary",
+                    use_container_width=True,
+                ):
+                    solicitar_senha_acao(
+                        name,
+                        url,
+                        "acessar",
+                        item_hash,
                     )
-                    typed_password = st.text_input(
-                        "Senha",
-                        type="password",
-                        key=f"senha_{item_hash}",
-                        placeholder="Digite a senha de acesso",
-                    )
+
+                b1, b2 = st.columns(2)
+
+                with b1:
                     if st.button(
-                        "Validar senha",
-                        key=f"validar_{item_hash}",
+                        "🟢 WhatsApp",
+                        key=f"whatsapp_{item_hash}",
                         use_container_width=True,
                     ):
-                        if typed_password == PAINEL_PASSWORD:
-                            st.session_state[unlock_key] = True
-                            st.success("Acesso liberado.")
-                            st.rerun()
-                        else:
-                            st.error("Senha incorreta.")
-            else:
-                if protected:
-                    st.caption("🔓 Painel desbloqueado nesta sessão.")
+                        solicitar_senha_acao(
+                            name,
+                            url,
+                            "whatsapp",
+                            item_hash,
+                        )
 
+                with b2:
+                    if st.button(
+                        "Copiar link⌄",
+                        key=f"copiar_{item_hash}",
+                        use_container_width=True,
+                    ):
+                        solicitar_senha_acao(
+                            name,
+                            url,
+                            "copiar",
+                            item_hash,
+                        )
+
+            else:
                 st.link_button(
                     "Acessar",
                     url,
@@ -677,24 +762,24 @@ for start in range(0, len(filtered), 4):
                 )
 
                 b1, b2 = st.columns(2)
+
                 with b1:
                     st.link_button(
                         "🟢 WhatsApp",
                         whatsapp_link(name, url),
                         use_container_width=True,
                     )
-                with b2:
-                    with st.popover("Copiar link", use_container_width=True):
-                        st.code(url, language=None, wrap_lines=True)
 
-                if protected:
-                    if st.button(
-                        "🔒 Bloquear novamente",
-                        key=f"bloquear_{item_hash}",
+                with b2:
+                    with st.popover(
+                        "Copiar link",
                         use_container_width=True,
                     ):
-                        st.session_state[unlock_key] = False
-                        st.rerun()
+                        st.code(
+                            url,
+                            language=None,
+                            wrap_lines=True,
+                        )
 
 st.markdown("""
 <div class="footer-site">
