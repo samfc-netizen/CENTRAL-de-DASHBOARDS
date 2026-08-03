@@ -1,111 +1,115 @@
 [
   {
-    "nome": "Dashboard Comercial Única Atacadista",
-    "descricao": "Acompanhamento comercial da Única Atacadista.",
+    "nome": "Comercial Única Atacadista",
+    "descricao": "Indicadores de vendas, desempenho e acompanhamento comercial da Única Atacadista.",
     "categoria": "Comercial",
     "tipo": "Dashboard",
     "url": "https://dashunica.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/dashboaard2unica-vendas",
+    "icone": "📈",
+    "destaque": true
   },
   {
-    "nome": "Dashboard Comercial Dauto Tintas",
-    "descricao": "Indicadores e resultados comerciais da Dauto Tintas.",
+    "nome": "Comercial Dauto Tintas",
+    "descricao": "Resultados comerciais por loja, marca, produto e demais indicadores da Dauto Tintas.",
     "categoria": "Comercial",
     "tipo": "Dashboard",
     "url": "https://dashdautotintas.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/dashboard-vendas",
+    "icone": "📊",
+    "destaque": true
   },
   {
     "nome": "Dashboard de Compras",
-    "descricao": "Análises de compras, giro, estoque e fornecedores.",
+    "descricao": "Indicadores de compras, fornecedores, estoque, giro e apoio às decisões de abastecimento.",
     "categoria": "Compras",
     "tipo": "Dashboard",
     "url": "https://comprasgrupodauto.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/INDICADOR-DE-COMPRAS",
+    "icone": "🛒"
   },
   {
-    "nome": "Dashboard Dauto Goiânia",
-    "descricao": "Indicadores e resultados da operação Dauto Goiânia.",
+    "nome": "Dauto Goiânia",
+    "descricao": "Indicadores financeiros e operacionais da unidade Dauto Goiânia.",
     "categoria": "Unidades",
     "tipo": "Dashboard",
     "url": "https://dautogoiania.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/DAUTO-GOI-NIA",
+    "icone": "🏢"
   },
   {
-    "nome": "Dashboard Dauto Paracatu",
-    "descricao": "Indicadores financeiros e operacionais da unidade de Paracatu.",
+    "nome": "Dauto Paracatu",
+    "descricao": "DRE e indicadores de desempenho da operação Dauto Paracatu.",
     "categoria": "Unidades",
     "tipo": "Dashboard",
     "url": "https://dreparacatu.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/DRE-PARACATU",
+    "icone": "🏬"
   },
   {
     "nome": "DRE e DFC Geral",
-    "descricao": "Visão consolidada da DRE e do fluxo de caixa do Grupo Dauto.",
+    "descricao": "Visão consolidada da Demonstração de Resultado e do Fluxo de Caixa do Grupo Dauto.",
     "categoria": "Financeiro",
     "tipo": "Dashboard",
     "url": "https://dreedfcgeraldauto.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/DRE-Grupo-Dauto",
+    "icone": "💹",
+    "destaque": true
   },
   {
     "nome": "DRE — Lojas Dauto Tintas",
-    "descricao": "DRE consolidada exclusivamente das lojas Dauto Tintas.",
+    "descricao": "Análise da DRE consolidada exclusivamente das lojas Dauto Tintas.",
     "categoria": "Financeiro",
     "tipo": "Dashboard",
     "url": "https://dreapenaslojasdauto.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/DRE-lojas-Dauto",
+    "icone": "🧾"
   },
   {
     "nome": "Dashboard de Inadimplência",
-    "descricao": "Acompanhamento de inadimplência do Grupo Dauto.",
+    "descricao": "Acompanhamento de títulos em atraso, clientes e indicadores de inadimplência.",
     "categoria": "Financeiro",
     "tipo": "Dashboard",
     "url": "https://inadimplenciagrupodauto.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/Inadimpl-nciaATB",
+    "icone": "⚠️"
   },
   {
     "nome": "Painel de Fluxo de Caixa",
-    "descricao": "Entradas, saídas, saldo e necessidade diária de caixa.",
+    "descricao": "Projeção de entradas, saídas, saldos e necessidade diária de caixa.",
     "categoria": "Financeiro",
     "tipo": "Dashboard",
     "url": "https://fluxodecaixadautotintas.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/fluxo-de-caixa-dauto-tintas",
+    "icone": "💰",
+    "destaque": true
   },
   {
     "nome": "Pedidos Única",
-    "descricao": "Acesso ao sistema de pedidos da Única Atacadista.",
-    "categoria": "Sistemas",
+    "descricao": "Acesso ao sistema operacional de pedidos da Única Atacadista.",
+    "categoria": "Operações",
     "tipo": "Sistema",
     "url": "https://pedidounica.streamlit.app/",
-    "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "repositorio": "samfc-netizen/PEDIDOCOMPRAUNICA",
+    "icone": "📦"
   },
   {
-    "nome": "Pasta de Compras no Drive",
-    "descricao": "Arquivos, controles e documentos da área de Compras.",
-    "categoria": "Documentos",
+    "nome": "Pasta de Compras",
+    "descricao": "Acesso aos arquivos, relatórios e controles da área de Compras no Google Drive.",
+    "categoria": "Acessos",
     "tipo": "Drive",
     "url": "https://drive.google.com/drive/folders/1aXn5x2HpJj_p0UnXxSvabQ-FxWetgGV1?usp=drive_link",
     "repositorio": "",
-    "ultima_atualizacao_manual": ""
+    "icone": "📁"
   },
   {
     "nome": "Portal Corporativo",
-    "descricao": "Portal corporativo da Dauto Tintas — em desenvolvimento.",
-    "categoria": "Sistemas",
+    "descricao": "Ambiente corporativo centralizado da Dauto Tintas. Projeto atualmente em desenvolvimento.",
+    "categoria": "Acessos",
     "tipo": "Portal",
     "url": "https://dauto-tintas.web.app/",
     "repositorio": "",
-    "ultima_atualizacao_manual": "",
+    "icone": "🌐",
     "em_desenvolvimento": true
   }
 ]
