@@ -1,437 +1,407 @@
 import html
 import json
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
 
 import requests
 import streamlit as st
 
-
 st.set_page_config(
-    page_title="Central de Dashboards | Grupo Dauto",
-    page_icon="📊",
+    page_title="Portal de Dashboards | Grupo Dauto",
+    page_icon="◆",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 BASE_DIR = Path(__file__).resolve().parent
-JSON_PATH = BASE_DIR / "dashboards.json"
+DATA_FILE = BASE_DIR / "dashboards.json"
 
-
-st.markdown(
-    """
-    <style>
-        :root {
-            --vermelho: #c51f2f;
-            --vermelho-escuro: #8f1420;
-            --cinza-fundo: #f5f6f8;
-            --cinza-texto: #667085;
-            --borda: #e4e7ec;
-            --branco: #ffffff;
-        }
-
-        .stApp {
-            background:
-                radial-gradient(circle at top right, rgba(197,31,47,.08), transparent 28rem),
-                var(--cinza-fundo);
-        }
-
-        .block-container {
-            max-width: 1450px;
-            padding-top: 2rem;
-            padding-bottom: 4rem;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #9e1623, #cf2b3d);
-            border-radius: 24px;
-            padding: 32px;
-            color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 16px 40px rgba(143,20,32,.18);
-        }
-
-        .hero-title {
-            font-size: 2.35rem;
-            line-height: 1.1;
-            font-weight: 850;
-            margin-bottom: 8px;
-        }
-
-        .hero-subtitle {
-            font-size: 1rem;
-            opacity: .92;
-            max-width: 820px;
-        }
-
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #101828;
-            margin-top: 10px;
-            margin-bottom: 6px;
-        }
-
-        .dashboard-card {
-            background: white;
-            border: 1px solid var(--borda);
-            border-radius: 18px;
-            padding: 22px;
-            min-height: 265px;
-            box-shadow: 0 6px 18px rgba(16,24,40,.06);
-            transition: .2s ease;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 26px rgba(16,24,40,.10);
-            border-color: #d0d5dd;
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            border-radius: 999px;
-            padding: 5px 10px;
-            font-size: .75rem;
-            font-weight: 750;
-            background: #fff1f3;
-            color: #a11524;
-        }
-
-        .badge-dev {
-            background: #fffaeb;
-            color: #b54708;
-        }
-
-        .card-title {
-            font-size: 1.18rem;
-            font-weight: 850;
-            color: #101828;
-            margin-top: 16px;
-            margin-bottom: 8px;
-        }
-
-        .card-description {
-            color: var(--cinza-texto);
-            font-size: .92rem;
-            line-height: 1.48;
-            min-height: 68px;
-        }
-
-        .meta-box {
-            margin-top: 16px;
-            padding-top: 13px;
-            border-top: 1px solid #eaecf0;
-            font-size: .80rem;
-            line-height: 1.55;
-            color: #475467;
-            min-height: 68px;
-        }
-
-        .online {
-            color: #027a48;
-            font-weight: 800;
-        }
-
-        .unknown {
-            color: #667085;
-            font-weight: 700;
-        }
-
-        div[data-testid="stLinkButton"] a {
-            width: 100%;
-            justify-content: center;
-            border-radius: 10px;
-        }
-
-        div[data-testid="stButton"] button {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        [data-testid="stMetric"] {
-            background: white;
-            border: 1px solid var(--borda);
-            padding: 13px 16px;
-            border-radius: 14px;
-            box-shadow: 0 4px 14px rgba(16,24,40,.04);
-        }
-
-        .footer {
-            color: #667085;
-            text-align: center;
-            padding-top: 10px;
-            font-size: .82rem;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<style>
+    #MainMenu, footer, header {visibility: hidden;}
+    .stApp {
+        background:
+            radial-gradient(circle at 90% 0%, rgba(186, 27, 45, .12), transparent 30rem),
+            #f4f6f9;
+    }
+    .block-container {
+        max-width: 1480px;
+        padding: 1.3rem 2.2rem 4rem;
+    }
+    .topbar {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 16px 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 5px 18px rgba(16,24,40,.05);
+        margin-bottom: 18px;
+    }
+    .brand {
+        font-size: 1.12rem;
+        font-weight: 900;
+        color: #9c1725;
+        letter-spacing: .01em;
+    }
+    .brand-sub {
+        font-size: .78rem;
+        color: #667085;
+        margin-top: 1px;
+    }
+    .top-status {
+        font-size: .78rem;
+        font-weight: 750;
+        color: #027a48;
+        background: #ecfdf3;
+        padding: 7px 12px;
+        border-radius: 999px;
+    }
+    .hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(125deg, #8d111e 0%, #bf2132 58%, #df4353 100%);
+        border-radius: 26px;
+        padding: 38px 42px;
+        color: white;
+        box-shadow: 0 20px 48px rgba(143,20,32,.20);
+        margin-bottom: 20px;
+    }
+    .hero:after {
+        content: "";
+        position: absolute;
+        width: 330px;
+        height: 330px;
+        border: 52px solid rgba(255,255,255,.08);
+        border-radius: 50%;
+        right: -90px;
+        top: -120px;
+    }
+    .eyebrow {
+        font-size: .76rem;
+        font-weight: 800;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+        opacity: .8;
+        margin-bottom: 12px;
+    }
+    .hero h1 {
+        font-size: 2.55rem;
+        line-height: 1.04;
+        margin: 0 0 12px 0;
+        max-width: 760px;
+    }
+    .hero p {
+        font-size: 1rem;
+        line-height: 1.55;
+        max-width: 760px;
+        opacity: .9;
+        margin: 0;
+    }
+    .section-head {
+        display:flex;
+        justify-content:space-between;
+        align-items:end;
+        margin: 26px 0 12px;
+    }
+    .section-title {
+        font-size: 1.28rem;
+        font-weight: 900;
+        color: #101828;
+    }
+    .section-note {
+        font-size: .82rem;
+        color: #667085;
+    }
+    [data-testid="stMetric"] {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        padding: 14px 17px;
+        border-radius: 16px;
+        box-shadow: 0 5px 16px rgba(16,24,40,.04);
+    }
+    .portal-card {
+        background: #fff;
+        border: 1px solid #e4e7ec;
+        border-radius: 20px;
+        padding: 22px;
+        min-height: 280px;
+        box-shadow: 0 7px 20px rgba(16,24,40,.055);
+        transition: all .18s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .portal-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 30px rgba(16,24,40,.10);
+        border-color: #d0d5dd;
+    }
+    .portal-card.featured:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 5px;
+        height: 100%;
+        background: #bd2031;
+    }
+    .card-head {
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        align-items:flex-start;
+    }
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        border-radius: 13px;
+        background: #fff1f3;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size: 1.35rem;
+    }
+    .tag {
+        font-size: .7rem;
+        font-weight: 850;
+        color:#9f1726;
+        background:#fff1f3;
+        padding:5px 9px;
+        border-radius:999px;
+    }
+    .tag-access {
+        color:#344054;
+        background:#f2f4f7;
+    }
+    .tag-dev {
+        color:#b54708;
+        background:#fffaeb;
+    }
+    .card-title {
+        font-size: 1.15rem;
+        font-weight: 900;
+        line-height: 1.2;
+        color:#101828;
+        margin: 18px 0 8px;
+    }
+    .card-description {
+        font-size: .89rem;
+        line-height: 1.5;
+        color:#667085;
+        min-height: 80px;
+    }
+    .card-meta {
+        border-top:1px solid #eaecf0;
+        margin-top:15px;
+        padding-top:13px;
+        min-height:73px;
+        font-size:.78rem;
+        line-height:1.55;
+        color:#475467;
+    }
+    .status-online {color:#027a48;font-weight:850;}
+    .status-access {color:#475467;font-weight:800;}
+    div[data-testid="stLinkButton"] a,
+    div[data-testid="stButton"] button {
+        width:100%;
+        justify-content:center;
+        border-radius:11px;
+    }
+    .footer-site {
+        text-align:center;
+        color:#667085;
+        padding-top:20px;
+        font-size:.78rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 @st.cache_data(ttl=300)
-def carregar_itens() -> list[dict]:
-    if not JSON_PATH.exists():
+def load_data():
+    if not DATA_FILE.exists():
         return []
-
-    with JSON_PATH.open("r", encoding="utf-8") as arquivo:
-        dados = json.load(arquivo)
-
-    return dados if isinstance(dados, list) else []
+    with DATA_FILE.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data if isinstance(data, list) else []
 
 
 @st.cache_data(ttl=900, show_spinner=False)
-def consultar_github(repositorio: str) -> dict:
-    """
-    repositorio deve ser informado como usuario/nome-do-repositorio.
-    Para repositórios privados, configure GITHUB_TOKEN nos Secrets do Streamlit.
-    """
-    if not repositorio or "/" not in repositorio:
+def github_last_commit(repo):
+    if not repo or "/" not in repo:
         return {}
-
     headers = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "central-dashboards-dauto",
+        "User-Agent": "grupo-dauto-dashboard-portal",
     }
-
-    token = st.secrets.get("GITHUB_TOKEN", "")
+    try:
+        token = st.secrets.get("GITHUB_TOKEN", "")
+    except Exception:
+        token = ""
     if token:
         headers["Authorization"] = f"Bearer {token}"
-
-    url = f"https://api.github.com/repos/{repositorio}/commits"
-    resposta = requests.get(
-        url,
-        params={"per_page": 1},
-        headers=headers,
-        timeout=8,
-    )
-
-    if resposta.status_code != 200:
-        return {}
-
-    commits = resposta.json()
-    if not commits:
-        return {}
-
-    ultimo = commits[0]
-    commit = ultimo.get("commit", {})
-    autor = commit.get("author", {}) or {}
-
-    return {
-        "data": autor.get("date", ""),
-        "autor": autor.get("name", ""),
-        "mensagem": (commit.get("message", "") or "").splitlines()[0],
-        "html_url": ultimo.get("html_url", ""),
-    }
-
-
-@st.cache_data(ttl=300, show_spinner=False)
-def verificar_url(url: str) -> bool | None:
-    """
-    Retorna True se o endereço responder.
-    Retorna None quando a verificação não for conclusiva.
-    Alguns apps Streamlit em repouso podem demorar para despertar.
-    """
     try:
-        resposta = requests.get(
-            url,
-            timeout=5,
-            allow_redirects=True,
-            headers={"User-Agent": "Mozilla/5.0"},
+        r = requests.get(
+            f"https://api.github.com/repos/{repo}/commits",
+            params={"per_page": 1},
+            headers=headers,
+            timeout=8,
         )
-        return resposta.status_code < 500
+        if r.status_code != 200:
+            return {}
+        commits = r.json()
+        if not commits:
+            return {}
+        item = commits[0]
+        commit = item.get("commit", {})
+        author = commit.get("author", {}) or {}
+        return {
+            "date": author.get("date", ""),
+            "author": author.get("name", ""),
+            "message": (commit.get("message", "") or "").splitlines()[0],
+        }
     except requests.RequestException:
-        return None
+        return {}
 
 
-def formatar_data_github(data_iso: str) -> str:
-    if not data_iso:
+def format_date(value):
+    if not value:
         return ""
-
     try:
-        data = datetime.fromisoformat(data_iso.replace("Z", "+00:00"))
-        data_local = data.astimezone()
-        return data_local.strftime("%d/%m/%Y às %H:%M")
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone()
+        return dt.strftime("%d/%m/%Y às %H:%M")
     except ValueError:
-        return data_iso
+        return value
 
 
-def link_whatsapp(nome: str, url: str) -> str:
-    mensagem = f"Olá! Segue o acesso ao {nome}:\n\n{url}"
-    return f"https://wa.me/?text={quote(mensagem)}"
+def whatsapp_link(name, url):
+    text = f"Olá! Segue o acesso ao {name}:\n\n{url}"
+    return f"https://wa.me/?text={quote(text)}"
 
 
-def texto_pesquisa(item: dict) -> str:
-    return " ".join(
-        str(item.get(chave, ""))
-        for chave in ("nome", "descricao", "categoria", "tipo")
-    ).lower()
+def searchable(item):
+    return " ".join(str(item.get(k, "")) for k in
+                    ("nome", "descricao", "categoria", "tipo")).lower()
 
 
-itens = carregar_itens()
+data = load_data()
 
-st.markdown(
-    """
-    <div class="hero">
-        <div class="hero-title">Central de Dashboards</div>
-        <div class="hero-subtitle">
-            Acesse os painéis, sistemas e documentos do Grupo Dauto em um único lugar.
-        </div>
+st.markdown("""
+<div class="topbar">
+    <div>
+        <div class="brand">GRUPO DAUTO</div>
+        <div class="brand-sub">Portal de inteligência e acessos corporativos</div>
     </div>
-    """,
-    unsafe_allow_html=True,
-)
+    <div class="top-status">● Portal disponível</div>
+</div>
+<div class="hero">
+    <div class="eyebrow">Central corporativa</div>
+    <h1>Dashboards, sistemas e documentos em um único lugar.</h1>
+    <p>Consulte informações comerciais, financeiras e operacionais e compartilhe os acessos com rapidez.</p>
+</div>
+""", unsafe_allow_html=True)
 
-categorias = sorted({item.get("categoria", "Outros") for item in itens})
-dashboards_total = sum(item.get("tipo") == "Dashboard" for item in itens)
+dash_count = sum(x.get("tipo") == "Dashboard" for x in data)
+access_count = len(data) - dash_count
+categories = sorted({x.get("categoria", "Outros") for x in data})
 
-c1, c2, c3 = st.columns(3)
-c1.metric("Acessos cadastrados", len(itens))
-c2.metric("Dashboards", dashboards_total)
-c3.metric("Categorias", len(categorias))
+m1, m2, m3, m4 = st.columns(4)
+m1.metric("Dashboards", dash_count)
+m2.metric("Sistemas e acessos", access_count)
+m3.metric("Áreas", len(categories))
+m4.metric("Total disponível", len(data))
 
-st.markdown('<div class="section-title">Localizar acesso</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="section-head">
+    <div>
+        <div class="section-title">Explore o portal</div>
+        <div class="section-note">Pesquise por nome ou filtre por área e tipo.</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 f1, f2, f3 = st.columns([2.2, 1, 1])
 with f1:
-    busca = st.text_input(
+    search = st.text_input(
         "Pesquisar",
-        placeholder="Digite o nome do dashboard, área ou finalidade...",
+        placeholder="Pesquisar dashboard, sistema ou documento...",
         label_visibility="collapsed",
     )
 with f2:
-    categoria = st.selectbox(
-        "Categoria",
-        ["Todas"] + categorias,
-        label_visibility="collapsed",
-    )
+    category = st.selectbox("Categoria", ["Todas"] + categories, label_visibility="collapsed")
 with f3:
-    tipo = st.selectbox(
-        "Tipo",
-        ["Todos"] + sorted({item.get("tipo", "Outro") for item in itens}),
-        label_visibility="collapsed",
-    )
+    types = sorted({x.get("tipo", "Outro") for x in data})
+    item_type = st.selectbox("Tipo", ["Todos"] + types, label_visibility="collapsed")
 
-busca_normalizada = busca.strip().lower()
-
-filtrados = [
-    item for item in itens
-    if (not busca_normalizada or busca_normalizada in texto_pesquisa(item))
-    and (categoria == "Todas" or item.get("categoria") == categoria)
-    and (tipo == "Todos" or item.get("tipo") == tipo)
+query = search.strip().lower()
+filtered = [
+    x for x in data
+    if (not query or query in searchable(x))
+    and (category == "Todas" or x.get("categoria") == category)
+    and (item_type == "Todos" or x.get("tipo") == item_type)
 ]
 
-st.caption(f"{len(filtrados)} acesso(s) encontrado(s).")
+st.caption(f"{len(filtered)} item(ns) disponível(is).")
 
-if not filtrados:
-    st.info("Nenhum acesso corresponde aos filtros selecionados.")
-else:
-    for inicio in range(0, len(filtrados), 3):
-        colunas = st.columns(3, gap="large")
+for start in range(0, len(filtered), 3):
+    cols = st.columns(3, gap="large")
+    for col, item in zip(cols, filtered[start:start+3]):
+        name = str(item.get("nome", "Acesso"))
+        description = str(item.get("descricao", ""))
+        category_name = str(item.get("categoria", "Outros"))
+        kind = str(item.get("tipo", "Acesso"))
+        url = str(item.get("url", ""))
+        repo = str(item.get("repositorio", "")).strip()
+        icon = str(item.get("icone", "◆"))
+        featured = bool(item.get("destaque", False))
+        development = bool(item.get("em_desenvolvimento", False))
 
-        for coluna, item in zip(colunas, filtrados[inicio:inicio + 3]):
-            nome = str(item.get("nome", "Acesso"))
-            descricao = str(item.get("descricao", ""))
-            categoria_item = str(item.get("categoria", "Outros"))
-            tipo_item = str(item.get("tipo", "Acesso"))
-            url = str(item.get("url", ""))
-            repositorio = str(item.get("repositorio", "")).strip()
-            manual = str(item.get("ultima_atualizacao_manual", "")).strip()
-            em_desenvolvimento = bool(item.get("em_desenvolvimento", False))
+        commit = github_last_commit(repo) if repo else {}
+        updated = format_date(commit.get("date", ""))
 
-            github = consultar_github(repositorio)
-            data_atualizacao = (
-                formatar_data_github(github.get("data", ""))
-                or manual
-                or "Repositório ainda não informado"
-            )
+        if repo:
+            status_text = '<span class="status-online">● Dashboard integrado</span>'
+            update_text = html.escape(updated or "Consulta ao GitHub indisponível")
+            message = html.escape(commit.get("message", "")[:78])
+            extra = f"<br><strong>Última alteração:</strong> {message}" if message else ""
+        else:
+            status_text = '<span class="status-access">● Acesso externo</span>'
+            update_text = "Não utiliza repositório Streamlit"
+            extra = ""
 
-            status = verificar_url(url)
-            if status is True:
-                status_html = '<span class="online">● Disponível</span>'
-            else:
-                status_html = '<span class="unknown">● Verificação inconclusiva</span>'
+        tag_class = "tag-dev" if development else ("tag-access" if not repo else "")
+        tag_label = "Em desenvolvimento" if development else kind
+        card_class = "portal-card featured" if featured else "portal-card"
 
-            badge_class = "badge badge-dev" if em_desenvolvimento else "badge"
-            badge_text = "Em desenvolvimento" if em_desenvolvimento else html.escape(tipo_item)
+        with col:
+            st.markdown(f"""
+            <div class="{card_class}">
+                <div class="card-head">
+                    <div class="icon-box">{html.escape(icon)}</div>
+                    <span class="tag {tag_class}">{html.escape(tag_label)}</span>
+                </div>
+                <div class="card-title">{html.escape(name)}</div>
+                <div class="card-description">{html.escape(description)}</div>
+                <div class="card-meta">
+                    {status_text}<br>
+                    <strong>Área:</strong> {html.escape(category_name)}<br>
+                    <strong>Atualização:</strong> {update_text}{extra}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
-            detalhe_commit = ""
-            if github.get("mensagem"):
-                detalhe_commit = (
-                    f"<br><strong>Última alteração:</strong> "
-                    f"{html.escape(github['mensagem'][:90])}"
-                )
-
-            with coluna:
-                st.markdown(
-                    f"""
-                    <div class="dashboard-card">
-                        <div class="card-top">
-                            <span class="{badge_class}">{badge_text}</span>
-                            <span class="badge">{html.escape(categoria_item)}</span>
-                        </div>
-                        <div class="card-title">{html.escape(nome)}</div>
-                        <div class="card-description">{html.escape(descricao)}</div>
-                        <div class="meta-box">
-                            {status_html}<br>
-                            <strong>Atualização:</strong> {html.escape(data_atualizacao)}
-                            {detalhe_commit}
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-
-                st.link_button(
-                    "Abrir acesso",
-                    url,
-                    type="primary",
-                    use_container_width=True,
-                )
-
-                st.link_button(
-                    "Compartilhar no WhatsApp",
-                    link_whatsapp(nome, url),
-                    use_container_width=True,
-                )
-
-                with st.expander("Copiar link"):
+            st.link_button("Acessar", url, type="primary", use_container_width=True)
+            b1, b2 = st.columns(2)
+            with b1:
+                st.link_button("WhatsApp", whatsapp_link(name, url), use_container_width=True)
+            with b2:
+                with st.popover("Copiar link", use_container_width=True):
                     st.code(url, language=None, wrap_lines=True)
 
-st.divider()
-
-with st.expander("Como ativar a atualização automática pelo GitHub"):
-    st.markdown(
-        """
-        No arquivo `dashboards.json`, preencha o campo `repositorio` no formato:
-
-        ```json
-        "repositorio": "usuario/nome-do-repositorio"
-        ```
-
-        Exemplo:
-
-        ```json
-        "repositorio": "samuelcarvalho/dashboard-vendas"
-        ```
-
-        A Central passará a exibir automaticamente a data, o autor e a mensagem
-        do último commit. Para repositórios privados, cadastre um token no
-        Streamlit Secrets com o nome `GITHUB_TOKEN`.
-        """
-    )
-
-st.markdown(
-    '<div class="footer">Central de Dashboards — Grupo Dauto</div>',
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<div class="footer-site">
+    Grupo Dauto · Portal de Dashboards e Acessos Corporativos
+</div>
+""", unsafe_allow_html=True)
