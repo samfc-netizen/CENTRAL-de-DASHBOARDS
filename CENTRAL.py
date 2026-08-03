@@ -423,6 +423,68 @@ st.markdown("""
         padding-top:22px;
         font-size:.74rem;
     }
+
+    /* Menu lateral funcional */
+    [data-testid="stSidebar"] [data-testid="stRadio"] > label,
+    [data-testid="stSidebar"] [data-testid="stSelectbox"] > label {
+        color:#7c899b;
+        font-size:.72rem;
+        text-transform:uppercase;
+        letter-spacing:.10em;
+        font-weight:850;
+    }
+
+    [data-testid="stSidebar"] [role="radiogroup"] {
+        gap:4px;
+    }
+
+    [data-testid="stSidebar"] [role="radiogroup"] label {
+        width:100%;
+        padding:9px 11px;
+        border-radius:10px;
+        color:#344054;
+        transition:.15s ease;
+    }
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:hover {
+        background:#f7f8fa;
+    }
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
+        color:#ffffff;
+        background:linear-gradient(90deg, var(--red), #f32d3e);
+        font-weight:850;
+        box-shadow:0 7px 18px rgba(237,28,46,.18);
+    }
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {
+        color:#ffffff !important;
+    }
+
+    [data-testid="stSidebar"] [role="radiogroup"] [data-testid="stMarkdownContainer"] p {
+        font-size:.87rem;
+        margin:0;
+    }
+
+    [data-testid="stSidebar"] [data-baseweb="select"] > div {
+        background:#ffffff;
+        border-color:#dfe5ed;
+    }
+
+    .page-context {
+        display:inline-flex;
+        align-items:center;
+        gap:7px;
+        margin-bottom:10px;
+        padding:6px 10px;
+        border-radius:999px;
+        background:#fff0f2;
+        border:1px solid #ffd8de;
+        color:#bf1423;
+        font-size:.74rem;
+        font-weight:850;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -556,29 +618,44 @@ data = load_data()
 
 dash_count = sum(x.get("tipo") == "Dashboard" for x in data)
 access_count = len(data) - dash_count
+development_count = sum(bool(x.get("em_desenvolvimento", False)) for x in data)
 categories = sorted({x.get("categoria", "Outros") for x in data})
 
 with st.sidebar:
-    st.markdown(
+    st.html(
         f"""
         <div class="sidebar-brand">
-            <div class="logo-circle"><img src="{UNICA_LOGO}" alt="Única"></div>
-            <div class="logo-circle"><img src="{DAUTO_LOGO}" alt="Dauto"></div>
+            <div class="logo-circle">
+                <img src="{UNICA_LOGO}" alt="Única">
+            </div>
+            <div class="logo-circle">
+                <img src="{DAUTO_LOGO}" alt="Dauto">
+            </div>
         </div>
-        <div class="nav-item active">⌂ &nbsp; Início</div>
-        <div class="sidebar-title">Navegação</div>
-        <div class="nav-item">▦ &nbsp; Dashboards <span class="nav-count">{dash_count}</span></div>
-        <div class="nav-item">↗ &nbsp; Acessos <span class="nav-count">{access_count}</span></div>
-        <div class="nav-item">☆ &nbsp; Favoritos</div>
-        <div class="nav-item">◫ &nbsp; Todos os sistemas</div>
-        <div class="nav-item">⚒ &nbsp; Em desenvolvimento</div>
-        <div class="sidebar-title">Categorias</div>
-        """ +
-        "".join(
-            f'<div class="nav-item">● &nbsp; {html.escape(cat)} '
-            f'<span class="nav-count">{sum(1 for x in data if x.get("categoria") == cat)}</span></div>'
-            for cat in categories
-        ) +
+        """
+    )
+
+    pagina = st.radio(
+        "Navegação",
+        options=[
+            "⌂ Início",
+            f"▦ Dashboards ({dash_count})",
+            f"↗ Acessos ({access_count})",
+            "☆ Favoritos",
+            "◫ Todos os sistemas",
+            f"⚒ Em desenvolvimento ({development_count})",
+        ],
+        index=0,
+        key="menu_lateral",
+    )
+
+    categoria_lateral = st.selectbox(
+        "Categorias",
+        options=["Todas"] + categories,
+        key="categoria_lateral",
+    )
+
+    st.html(
         f"""
         <div class="side-status">
             <strong>Status dos sistemas</strong><br><br>
@@ -588,19 +665,23 @@ with st.sidebar:
         </div>
         <div class="side-help">
             <strong>Precisa de ajuda?</strong><br>
-            <span style="color:#667085">Entre em contato com o time responsável.</span>
+            <span style="color:#667085">
+                Entre em contato com o time responsável.
+            </span>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
-st.markdown(
+st.html(
     """
     <div class="topbar">
         <div class="welcome">
             <small>Bem-vindo à</small>
             <h1>Central de Dashboards</h1>
-            <p>Acesse todos os dashboards e sistemas do Grupo Dauto em um só lugar.</p>
+            <p>
+                Acesse todos os dashboards e sistemas do Grupo Dauto
+                em um só lugar.
+            </p>
         </div>
         <div class="top-status">
             <span class="top-status-dot"></span>
@@ -608,8 +689,7 @@ st.markdown(
         </div>
     </div>
     <div class="hero-line"></div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 m1, m2, m3, m4 = st.columns(4)
@@ -618,14 +698,18 @@ m2.metric("Sistemas e acessos", access_count)
 m3.metric("Áreas", len(categories))
 m4.metric("Total disponível", len(data))
 
-st.markdown("""
-<div class="section-head">
-    <div>
-        <div class="section-title">Explore o portal</div>
-        <div class="section-note">Pesquise por nome ou filtre por área e tipo.</div>
+st.html(
+    """
+    <div class="section-head">
+        <div>
+            <div class="section-title">Explore o portal</div>
+            <div class="section-note">
+                Pesquise por nome ou filtre por área e tipo.
+            </div>
+        </div>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """
+)
 
 f1, f2, f3 = st.columns([2.2, 1, 1])
 with f1:
@@ -635,24 +719,74 @@ with f1:
         label_visibility="collapsed",
     )
 with f2:
-    category = st.selectbox("Categoria", ["Todas"] + categories, label_visibility="collapsed")
+    category = st.selectbox(
+        "Categoria",
+        ["Todas"] + categories,
+        label_visibility="collapsed",
+        key="categoria_superior",
+    )
 with f3:
     types = sorted({x.get("tipo", "Outro") for x in data})
-    item_type = st.selectbox("Tipo", ["Todos"] + types, label_visibility="collapsed")
+    item_type = st.selectbox(
+        "Tipo",
+        ["Todos"] + types,
+        label_visibility="collapsed",
+    )
+
+# O menu lateral define um filtro principal.
+if pagina.startswith("▦ Dashboards"):
+    filtro_menu = lambda x: x.get("tipo") == "Dashboard"
+    contexto = "Dashboards"
+elif pagina.startswith("↗ Acessos"):
+    filtro_menu = lambda x: x.get("tipo") != "Dashboard"
+    contexto = "Sistemas e acessos"
+elif pagina.startswith("☆ Favoritos"):
+    filtro_menu = lambda x: bool(x.get("destaque", False))
+    contexto = "Favoritos"
+elif pagina.startswith("⚒ Em desenvolvimento"):
+    filtro_menu = lambda x: bool(x.get("em_desenvolvimento", False))
+    contexto = "Em desenvolvimento"
+else:
+    filtro_menu = lambda x: True
+    contexto = "Todos os itens" if pagina.startswith("◫") else "Início"
+
+# A categoria lateral tem prioridade quando selecionada.
+categoria_ativa = (
+    categoria_lateral
+    if categoria_lateral != "Todas"
+    else category
+)
 
 query = search.strip().lower()
 filtered = [
     x for x in data
-    if (not query or query in searchable(x))
-    and (category == "Todas" or x.get("categoria") == category)
-    and (item_type == "Todos" or x.get("tipo") == item_type)
+    if filtro_menu(x)
+    and (not query or query in searchable(x))
+    and (
+        categoria_ativa == "Todas"
+        or x.get("categoria") == categoria_ativa
+    )
+    and (
+        item_type == "Todos"
+        or x.get("tipo") == item_type
+    )
 ]
 
+st.html(
+    f'<div class="page-context">● {html.escape(contexto)}</div>'
+)
 st.caption(f"{len(filtered)} item(ns) disponível(is).")
 
-for start in range(0, len(filtered), 4):
+if not filtered:
+    st.info("Nenhum item corresponde aos filtros selecionados.")
+
+for start_index in range(0, len(filtered), 4):
     cols = st.columns(4, gap="medium")
-    for col, item in zip(cols, filtered[start:start+4]):
+
+    for col, item in zip(
+        cols,
+        filtered[start_index:start_index + 4],
+    ):
         name = str(item.get("nome", "Acesso"))
         description = str(item.get("descricao", ""))
         category_name = str(item.get("categoria", "Outros"))
@@ -661,55 +795,95 @@ for start in range(0, len(filtered), 4):
         repo = str(item.get("repositorio", "")).strip()
         icon = str(item.get("icone", "◆"))
         featured = bool(item.get("destaque", False))
-        development = bool(item.get("em_desenvolvimento", False))
+        development = bool(
+            item.get("em_desenvolvimento", False)
+        )
         protected = bool(item.get("protegido", False))
-        item_hash = hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
+        item_hash = hashlib.sha256(
+            url.encode("utf-8")
+        ).hexdigest()[:12]
 
         commit = github_last_commit(repo) if repo else {}
         updated = format_date(commit.get("date", ""))
 
         if repo:
-            status_text = '<span class="status-online">● Online</span>'
-            update_text = html.escape(updated or "Consulta ao GitHub indisponível")
-            message = html.escape(commit.get("message", "")[:78])
-            extra = f"<br><strong>Última alteração:</strong> {message}" if message else ""
+            status_text = (
+                '<span class="status-online">● Online</span>'
+            )
+            update_text = html.escape(
+                updated or "Consulta ao GitHub indisponível"
+            )
+            message = html.escape(
+                commit.get("message", "")[:78]
+            )
+            extra = (
+                "<br><strong>Última alteração:</strong> "
+                f"{message}"
+                if message
+                else ""
+            )
         else:
-            status_text = '<span class="status-access">● Acesso externo</span>'
-            update_text = "Não utiliza repositório Streamlit"
+            status_text = (
+                '<span class="status-access">'
+                "● Acesso externo</span>"
+            )
+            update_text = (
+                "Não utiliza repositório Streamlit"
+            )
             extra = ""
 
-        tag_class = "tag-dev" if development else ("tag-access" if not repo else "")
-        tag_label = "Em desenvolvimento" if development else kind
-        card_class = "portal-card featured" if featured else "portal-card"
-
+        tag_class = (
+            "tag-dev"
+            if development
+            else ("tag-access" if not repo else "")
+        )
+        tag_label = (
+            "Em desenvolvimento"
+            if development
+            else kind
+        )
+        card_class = (
+            "portal-card featured"
+            if featured
+            else "portal-card"
+        )
         security_html = (
-            "<strong>Segurança:</strong> 🔒 Acesso com senha<br>"
+            "<strong>Segurança:</strong> "
+            "🔒 Acesso com senha<br>"
             if protected
             else ""
         )
 
-        card_html = textwrap.dedent(
-            f"""
-            <div class="{card_class}">
-                <div class="card-head">
-                    <div class="icon-box">{html.escape(icon)}</div>
-                    <span class="tag {tag_class}">{html.escape(tag_label)}</span>
+        card_html = f"""
+        <div class="{card_class}">
+            <div class="card-head">
+                <div class="icon-box">
+                    {html.escape(icon)}
                 </div>
-                <div class="card-title">{html.escape(name)}</div>
-                <div class="card-description">{html.escape(description)}</div>
-                <div class="card-meta">
-                    {status_text}<br>
-                    <strong>Área:</strong> {html.escape(category_name)}<br>
-                    {security_html}
-                    <strong>Atualização:</strong> {update_text}{extra}
-                </div>
+                <span class="tag {tag_class}">
+                    {html.escape(tag_label)}
+                </span>
             </div>
-            """
-        ).strip()
+            <div class="card-title">
+                {html.escape(name)}
+            </div>
+            <div class="card-description">
+                {html.escape(description)}
+            </div>
+            <div class="card-meta">
+                {status_text}<br>
+                <strong>Área:</strong>
+                {html.escape(category_name)}<br>
+                {security_html}
+                <strong>Atualização:</strong>
+                {update_text}{extra}
+            </div>
+        </div>
+        """
 
         with col:
-            st.markdown(card_html, unsafe_allow_html=True)
-
+            # st.html renderiza HTML diretamente, sem o parser Markdown.
+            st.html(card_html)
 
             if protected:
                 if st.button(
@@ -752,7 +926,6 @@ for start in range(0, len(filtered), 4):
                             "copiar",
                             item_hash,
                         )
-
             else:
                 st.link_button(
                     "Acessar",
@@ -781,8 +954,10 @@ for start in range(0, len(filtered), 4):
                             wrap_lines=True,
                         )
 
-st.markdown("""
-<div class="footer-site">
-    © 2026 Grupo Dauto · Todos os direitos reservados
-</div>
-""", unsafe_allow_html=True)
+st.html(
+    """
+    <div class="footer-site">
+        © 2026 Grupo Dauto · Todos os direitos reservados
+    </div>
+    """
+)
