@@ -23,17 +23,18 @@ DAUTO_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYUAAAELCAYAAAA2mZrg
 st.markdown("""
 <style>
     :root {
-        --bg: #06111f;
-        --panel: #0b1728;
-        --panel-2: #0f1d31;
-        --border: #22314a;
-        --text: #f8fafc;
-        --muted: #9fb0c6;
-        --red: #ef1f2f;
-        --blue: #2368f5;
-        --green: #19c879;
-        --orange: #f59e0b;
-        --purple: #8b5cf6;
+        --bg: #f6f8fb;
+        --panel: #ffffff;
+        --panel-soft: #fbfcfe;
+        --border: #e3e8ef;
+        --text: #101828;
+        --muted: #667085;
+        --red: #ed1c2e;
+        --red-dark: #c91424;
+        --blue: #145edb;
+        --green: #12a864;
+        --orange: #f07a00;
+        --purple: #7b45d6;
     }
 
     #MainMenu, footer, header {
@@ -42,20 +43,19 @@ st.markdown("""
 
     .stApp {
         background:
-            radial-gradient(circle at 82% 2%, rgba(35,104,245,.18), transparent 28rem),
-            radial-gradient(circle at 20% 5%, rgba(239,31,47,.14), transparent 26rem),
+            radial-gradient(circle at 88% 0%, rgba(237,28,46,.065), transparent 28rem),
             var(--bg);
         color: var(--text);
     }
 
     .block-container {
         max-width: 1600px;
-        padding: 1rem 1.4rem 3rem;
+        padding: 1rem 1.5rem 3rem;
     }
 
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #071322 0%, #06101d 100%);
-        border-right: 1px solid #1b2a3e;
+        background: #ffffff;
+        border-right: 1px solid var(--border);
         min-width: 250px;
         max-width: 250px;
     }
@@ -67,61 +67,81 @@ st.markdown("""
     .sidebar-brand {
         display:flex;
         align-items:center;
-        gap:12px;
-        padding: 8px 6px 18px;
-        border-bottom: 1px solid #1e2d42;
+        justify-content:center;
+        gap:14px;
+        padding: 8px 4px 20px;
+        border-bottom: 1px solid var(--border);
         margin-bottom: 18px;
     }
 
-    .sidebar-brand img {
-        height: 38px;
+    .logo-circle {
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #d8dee8;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        overflow:hidden;
+        box-shadow: 0 7px 20px rgba(16,24,40,.07);
+    }
+
+    .logo-circle img {
+        width: 76%;
+        height: 76%;
         object-fit: contain;
-        filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+        display:block;
     }
 
     .sidebar-title {
-        font-size:.78rem;
-        color:#91a4bd;
+        font-size:.72rem;
+        color:#7c899b;
         text-transform:uppercase;
-        letter-spacing:.14em;
-        font-weight:800;
-        margin: 12px 4px 8px;
+        letter-spacing:.12em;
+        font-weight:850;
+        margin: 13px 5px 8px;
     }
 
     .nav-item {
-        padding: 11px 12px;
+        padding: 10px 12px;
         border-radius: 10px;
-        color: #dbe7f5;
-        font-size:.9rem;
-        margin-bottom:6px;
+        color: #344054;
+        font-size:.88rem;
+        margin-bottom:5px;
         border:1px solid transparent;
-        background: rgba(255,255,255,.015);
     }
 
     .nav-item.active {
-        background: linear-gradient(90deg, rgba(239,31,47,.95), rgba(239,31,47,.78));
-        border-color: rgba(255,255,255,.08);
-        color:#fff;
-        font-weight:800;
+        color:#ffffff;
+        background: linear-gradient(90deg, var(--red), #f32d3e);
+        font-weight:850;
+        box-shadow:0 7px 18px rgba(237,28,46,.18);
     }
 
     .nav-count {
         float:right;
-        background:#111f32;
-        border:1px solid #2a3a50;
+        color:#475467;
+        background:#f2f4f7;
+        border:1px solid #e4e7ec;
         padding:1px 7px;
         border-radius:999px;
-        font-size:.72rem;
+        font-size:.7rem;
     }
 
-    .side-status {
+    .side-status, .side-help {
         margin-top:18px;
-        border:1px solid #213149;
-        background:#0b1728;
+        border:1px solid var(--border);
+        background:#ffffff;
         padding:15px;
         border-radius:14px;
-        color:#dce7f5;
-        font-size:.82rem;
+        color:#344054;
+        font-size:.8rem;
+        box-shadow:0 6px 18px rgba(16,24,40,.045);
+    }
+
+    .side-help {
+        text-align:center;
     }
 
     .topbar {
@@ -129,143 +149,118 @@ st.markdown("""
         align-items:center;
         justify-content:space-between;
         gap:18px;
-        background:rgba(7,17,31,.78);
-        border:1px solid #1e2d42;
-        backdrop-filter: blur(14px);
-        border-radius:16px;
-        padding:12px 16px;
-        margin-bottom:14px;
+        margin-bottom:8px;
     }
 
-    .brand-row {
-        display:flex;
-        align-items:center;
-        gap:20px;
+    .welcome small {
+        display:block;
+        color:#475467;
+        font-size:.92rem;
+        margin-bottom:1px;
     }
 
-    .brand-row img {
-        height:42px;
-        max-width:180px;
-        object-fit:contain;
-        background:#fff;
-        border-radius:10px;
-        padding:5px 9px;
+    .welcome h1 {
+        margin:0;
+        color:#101828;
+        font-size:2.45rem;
+        line-height:1.03;
+        letter-spacing:-.035em;
+    }
+
+    .welcome p {
+        color:#667085;
+        font-size:.92rem;
+        margin:8px 0 0;
     }
 
     .top-status {
         display:inline-flex;
         align-items:center;
         gap:8px;
-        color:#bcf7d7;
-        background:rgba(25,200,121,.11);
-        border:1px solid rgba(25,200,121,.28);
+        color:#344054;
+        background:#ffffff;
+        border:1px solid var(--border);
         border-radius:999px;
-        padding:8px 12px;
-        font-size:.78rem;
+        padding:9px 14px;
+        font-size:.76rem;
         font-weight:800;
+        box-shadow:0 5px 16px rgba(16,24,40,.045);
     }
 
-    .hero {
-        min-height:190px;
-        border:1px solid #22324b;
-        border-radius:22px;
-        padding:28px 34px;
-        margin-bottom:18px;
+    .top-status-dot {
+        width:9px;
+        height:9px;
+        background:var(--green);
+        border-radius:50%;
+        box-shadow:0 0 0 4px rgba(18,168,100,.10);
+    }
+
+    .hero-line {
         position:relative;
+        height:48px;
+        margin-top:-4px;
+        margin-bottom:5px;
         overflow:hidden;
-        background:
-            linear-gradient(115deg, rgba(239,31,47,.16), transparent 34%),
-            linear-gradient(250deg, rgba(35,104,245,.26), transparent 45%),
-            #091728;
-        box-shadow: 0 18px 45px rgba(0,0,0,.24);
+        opacity:.52;
     }
 
-    .hero:before {
+    .hero-line:before,
+    .hero-line:after {
         content:"";
         position:absolute;
-        right:-60px;
-        top:-110px;
-        width:430px;
-        height:430px;
-        border-radius:50%;
-        border:62px solid rgba(35,104,245,.10);
-    }
-
-    .hero:after {
-        content:"";
-        position:absolute;
-        right:130px;
-        bottom:-90px;
-        width:280px;
-        height:280px;
-        border-radius:50%;
-        border:40px solid rgba(239,31,47,.10);
-    }
-
-    .hero-kicker {
-        font-size:.82rem;
-        color:#b8c7d9;
-        font-weight:700;
-        margin-bottom:6px;
-    }
-
-    .hero h1 {
-        margin:0;
-        font-size:2.45rem;
-        color:#fff;
-        line-height:1.05;
-        max-width:760px;
-    }
-
-    .hero p {
-        margin:12px 0 0;
-        max-width:770px;
-        color:#bdcad9;
-        font-size:.98rem;
-        line-height:1.55;
+        right:-4%;
+        top:10px;
+        width:58%;
+        height:1px;
+        background:linear-gradient(90deg, transparent, rgba(237,28,46,.72));
+        transform:rotate(-7deg);
+        box-shadow:
+            0 8px 0 rgba(237,28,46,.32),
+            0 16px 0 rgba(237,28,46,.22),
+            0 24px 0 rgba(237,28,46,.14);
     }
 
     [data-testid="stMetric"] {
-        background: linear-gradient(180deg, #101d31, #0b1728);
-        border:1px solid #22314a;
+        background:#ffffff;
+        border:1px solid var(--border);
         padding:15px 17px;
-        border-radius:16px;
-        box-shadow: 0 8px 22px rgba(0,0,0,.16);
+        border-radius:15px;
+        box-shadow:0 7px 20px rgba(16,24,40,.055);
     }
 
     [data-testid="stMetricLabel"] {
-        color:#9fb0c6;
+        color:#475467;
     }
 
     [data-testid="stMetricValue"] {
-        color:#fff;
+        color:#101828;
     }
 
     .section-head {
         display:flex;
         align-items:flex-end;
         justify-content:space-between;
-        margin:24px 0 12px;
+        margin:22px 0 10px;
     }
 
     .section-title {
-        color:#fff;
-        font-size:1.25rem;
+        color:#101828;
+        font-size:1.2rem;
         font-weight:900;
     }
 
     .section-note {
-        color:#92a4ba;
-        font-size:.8rem;
+        color:#7b8798;
+        font-size:.78rem;
     }
 
     .portal-card {
-        background: linear-gradient(180deg, #0f1d31, #0a1727);
-        border:1px solid #22314a;
-        border-radius:16px;
-        padding:18px;
-        min-height:275px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.18);
+        background:#ffffff;
+        border:1px solid var(--border);
+        border-radius:15px;
+        padding:17px;
+        min-height:270px;
+        box-shadow:0 7px 20px rgba(16,24,40,.055);
         transition:.18s ease;
         position:relative;
         overflow:hidden;
@@ -273,8 +268,8 @@ st.markdown("""
 
     .portal-card:hover {
         transform:translateY(-3px);
-        border-color:#345079;
-        box-shadow:0 14px 30px rgba(0,0,0,.28);
+        border-color:#ccd5e2;
+        box-shadow:0 14px 30px rgba(16,24,40,.10);
     }
 
     .portal-card.featured:before {
@@ -295,70 +290,72 @@ st.markdown("""
     }
 
     .icon-box {
-        width:44px;
-        height:44px;
+        width:43px;
+        height:43px;
         display:flex;
         align-items:center;
         justify-content:center;
-        border-radius:13px;
-        background:linear-gradient(135deg, #1e61ef, #1248b9);
-        font-size:1.25rem;
-        box-shadow:0 8px 18px rgba(35,104,245,.22);
+        border-radius:12px;
+        background:linear-gradient(135deg, var(--red), #ff4050);
+        color:#fff;
+        font-size:1.2rem;
+        box-shadow:0 7px 16px rgba(237,28,46,.18);
     }
 
     .tag {
-        font-size:.68rem;
+        font-size:.66rem;
         font-weight:850;
-        color:#fff;
+        color:#bf1423;
         padding:5px 9px;
         border-radius:999px;
-        background:rgba(239,31,47,.86);
+        background:#fff0f2;
+        border:1px solid #ffd8de;
     }
 
     .tag-access {
-        background:rgba(25,200,121,.20);
-        color:#91f4bd;
-        border:1px solid rgba(25,200,121,.28);
+        background:#ecfdf3;
+        color:#087443;
+        border-color:#c9f2da;
     }
 
     .tag-dev {
-        background:rgba(245,158,11,.18);
-        color:#ffd188;
-        border:1px solid rgba(245,158,11,.30);
+        background:#fff7e8;
+        color:#ad5900;
+        border-color:#ffe0ad;
     }
 
     .card-title {
-        font-size:1.08rem;
+        font-size:1.03rem;
         font-weight:900;
-        color:#fff;
+        color:#101828;
         line-height:1.22;
-        margin:16px 0 8px;
+        margin:15px 0 7px;
     }
 
     .card-description {
-        color:#a8b8ca;
-        font-size:.86rem;
-        line-height:1.5;
-        min-height:78px;
+        color:#667085;
+        font-size:.83rem;
+        line-height:1.48;
+        min-height:75px;
     }
 
     .card-meta {
-        border-top:1px solid #23344c;
-        margin-top:14px;
-        padding-top:12px;
-        min-height:74px;
-        font-size:.76rem;
-        color:#9fb0c6;
-        line-height:1.52;
+        border-top:1px solid #eaecf0;
+        margin-top:13px;
+        padding-top:11px;
+        min-height:73px;
+        font-size:.74rem;
+        color:#667085;
+        line-height:1.5;
     }
 
     .status-online {
-        color:#79efaa;
+        color:#079455;
         font-weight:900;
     }
 
     .status-access {
-        color:#80c8ff;
+        color:#145edb;
         font-weight:900;
     }
 
@@ -366,43 +363,60 @@ st.markdown("""
     div[data-testid="stButton"] button {
         width:100%;
         justify-content:center;
-        border-radius:10px;
-        min-height:42px;
-        background:#e31f2c;
-        border-color:#e31f2c;
-        color:#fff;
-        font-weight:800;
+        border-radius:9px;
+        min-height:40px;
+        font-weight:850;
     }
 
-    div[data-testid="stLinkButton"] a:hover,
-    div[data-testid="stButton"] button:hover {
-        background:#ff3040;
-        border-color:#ff3040;
+    div[data-testid="stLinkButton"] a {
+        background:var(--red);
+        border-color:var(--red);
+        color:#fff;
+    }
+
+    div[data-testid="stLinkButton"] a:hover {
+        background:var(--red-dark);
+        border-color:var(--red-dark);
         color:#fff;
     }
 
     [data-testid="stTextInput"] input,
     [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
-        background:#0d1a2d;
-        color:#eaf2fb;
-        border-color:#263852;
-        border-radius:10px;
+        background:#ffffff;
+        color:#101828;
+        border-color:#dfe5ed;
+        border-radius:9px;
     }
 
     [data-testid="stPopover"] button {
-        background:#122036 !important;
-        border:1px solid #2a3b55 !important;
+        background:#ffffff !important;
+        border:1px solid #dfe5ed !important;
+        color:#344054 !important;
+    }
+
+    .wa-badge {
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        width:19px;
+        height:19px;
+        border-radius:50%;
+        background:#25D366;
+        color:#fff;
+        font-size:.78rem;
+        font-weight:900;
+        line-height:1;
+        margin-right:5px;
     }
 
     .footer-site {
         text-align:center;
-        color:#71849d;
+        color:#98a2b3;
         padding-top:22px;
-        font-size:.76rem;
+        font-size:.74rem;
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 @st.cache_data(ttl=300)
 def load_data():
@@ -482,8 +496,8 @@ with st.sidebar:
     st.markdown(
         f"""
         <div class="sidebar-brand">
-            <img src="{UNICA_LOGO}" alt="Única">
-            <img src="{DAUTO_LOGO}" alt="Dauto">
+            <div class="logo-circle"><img src="{UNICA_LOGO}" alt="Única"></div>
+            <div class="logo-circle"><img src="{DAUTO_LOGO}" alt="Dauto"></div>
         </div>
         <div class="nav-item active">⌂ &nbsp; Início</div>
         <div class="sidebar-title">Navegação</div>
@@ -491,6 +505,7 @@ with st.sidebar:
         <div class="nav-item">↗ &nbsp; Acessos <span class="nav-count">{access_count}</span></div>
         <div class="nav-item">☆ &nbsp; Favoritos</div>
         <div class="nav-item">◫ &nbsp; Todos os sistemas</div>
+        <div class="nav-item">⚒ &nbsp; Em desenvolvimento</div>
         <div class="sidebar-title">Categorias</div>
         """ +
         "".join(
@@ -501,28 +516,32 @@ with st.sidebar:
         f"""
         <div class="side-status">
             <strong>Status dos sistemas</strong><br><br>
-            <span style="color:#79efaa;font-weight:800">● Online</span>
+            <span style="color:#079455;font-weight:850">● Online</span>
             <span style="float:right">{len(data)}</span><br>
-            <span style="color:#9fb0c6">Atualização via GitHub</span>
+            <span style="color:#667085">Atualização via GitHub</span>
+        </div>
+        <div class="side-help">
+            <strong>Precisa de ajuda?</strong><br>
+            <span style="color:#667085">Entre em contato com o time responsável.</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 st.markdown(
-    f"""
+    """
     <div class="topbar">
-        <div class="brand-row">
-            <img src="{UNICA_LOGO}" alt="Única Atacadista">
-            <img src="{DAUTO_LOGO}" alt="Dauto Tintas">
+        <div class="welcome">
+            <small>Bem-vindo à</small>
+            <h1>Central de Dashboards</h1>
+            <p>Acesse todos os dashboards e sistemas do Grupo Dauto em um só lugar.</p>
         </div>
-        <div class="top-status">● Portal disponível</div>
+        <div class="top-status">
+            <span class="top-status-dot"></span>
+            Todos os sistemas operacionais
+        </div>
     </div>
-    <div class="hero">
-        <div class="hero-kicker">Bem-vindo à</div>
-        <h1>Central de Dashboards</h1>
-        <p>Acesse todos os dashboards, sistemas e documentos do Grupo Dauto em um único lugar.</p>
-    </div>
+    <div class="hero-line"></div>
     """,
     unsafe_allow_html=True,
 )
@@ -546,7 +565,7 @@ f1, f2, f3 = st.columns([2.2, 1, 1])
 with f1:
     search = st.text_input(
         "Pesquisar",
-        placeholder="Pesquisar dashboard, sistema ou documento...",
+        placeholder="Pesquisar dashboards, sistemas ou acessos...",
         label_visibility="collapsed",
     )
 with f2:
@@ -582,7 +601,7 @@ for start in range(0, len(filtered), 4):
         updated = format_date(commit.get("date", ""))
 
         if repo:
-            status_text = '<span class="status-online">● Dashboard integrado</span>'
+            status_text = '<span class="status-online">● Online</span>'
             update_text = html.escape(updated or "Consulta ao GitHub indisponível")
             message = html.escape(commit.get("message", "")[:78])
             extra = f"<br><strong>Última alteração:</strong> {message}" if message else ""
@@ -615,13 +634,13 @@ for start in range(0, len(filtered), 4):
             st.link_button("Acessar", url, type="primary", use_container_width=True)
             b1, b2 = st.columns(2)
             with b1:
-                st.link_button("WhatsApp", whatsapp_link(name, url), use_container_width=True)
+                st.link_button("🟢 WhatsApp", whatsapp_link(name, url), use_container_width=True)
             with b2:
                 with st.popover("Copiar link", use_container_width=True):
                     st.code(url, language=None, wrap_lines=True)
 
 st.markdown("""
 <div class="footer-site">
-    © 2026 Grupo Dauto · Portal de Dashboards e Acessos Corporativos
+    © 2026 Grupo Dauto · Todos os direitos reservados
 </div>
 """, unsafe_allow_html=True)
