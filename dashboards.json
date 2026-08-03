@@ -1,0 +1,111 @@
+[
+  {
+    "nome": "Dashboard Comercial Única Atacadista",
+    "descricao": "Acompanhamento comercial da Única Atacadista.",
+    "categoria": "Comercial",
+    "tipo": "Dashboard",
+    "url": "https://dashunica.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Dashboard Comercial Dauto Tintas",
+    "descricao": "Indicadores e resultados comerciais da Dauto Tintas.",
+    "categoria": "Comercial",
+    "tipo": "Dashboard",
+    "url": "https://dashdautotintas.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Dashboard de Compras",
+    "descricao": "Análises de compras, giro, estoque e fornecedores.",
+    "categoria": "Compras",
+    "tipo": "Dashboard",
+    "url": "https://comprasgrupodauto.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Dashboard Dauto Goiânia",
+    "descricao": "Indicadores e resultados da operação Dauto Goiânia.",
+    "categoria": "Unidades",
+    "tipo": "Dashboard",
+    "url": "https://dautogoiania.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Dashboard Dauto Paracatu",
+    "descricao": "Indicadores financeiros e operacionais da unidade de Paracatu.",
+    "categoria": "Unidades",
+    "tipo": "Dashboard",
+    "url": "https://dreparacatu.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "DRE e DFC Geral",
+    "descricao": "Visão consolidada da DRE e do fluxo de caixa do Grupo Dauto.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://dreedfcgeraldauto.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "DRE — Lojas Dauto Tintas",
+    "descricao": "DRE consolidada exclusivamente das lojas Dauto Tintas.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://dreapenaslojasdauto.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Dashboard de Inadimplência",
+    "descricao": "Acompanhamento de inadimplência do Grupo Dauto.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://inadimplenciagrupodauto.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Painel de Fluxo de Caixa",
+    "descricao": "Entradas, saídas, saldo e necessidade diária de caixa.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://fluxodecaixadautotintas.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Pedidos Única",
+    "descricao": "Acesso ao sistema de pedidos da Única Atacadista.",
+    "categoria": "Sistemas",
+    "tipo": "Sistema",
+    "url": "https://pedidounica.streamlit.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Pasta de Compras no Drive",
+    "descricao": "Arquivos, controles e documentos da área de Compras.",
+    "categoria": "Documentos",
+    "tipo": "Drive",
+    "url": "https://drive.google.com/drive/folders/1aXn5x2HpJj_p0UnXxSvabQ-FxWetgGV1?usp=drive_link",
+    "repositorio": "",
+    "ultima_atualizacao_manual": ""
+  },
+  {
+    "nome": "Portal Corporativo",
+    "descricao": "Portal corporativo da Dauto Tintas — em desenvolvimento.",
+    "categoria": "Sistemas",
+    "tipo": "Portal",
+    "url": "https://dauto-tintas.web.app/",
+    "repositorio": "",
+    "ultima_atualizacao_manual": "",
+    "em_desenvolvimento": true
+  }
+]
