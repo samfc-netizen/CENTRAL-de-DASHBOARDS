@@ -1,0 +1,167 @@
+[
+  {
+    "nome": "Comercial Única Atacadista",
+    "descricao": "Indicadores de vendas, desempenho e acompanhamento comercial da Única Atacadista.",
+    "categoria": "Comercial",
+    "tipo": "Dashboard",
+    "url": "https://dashunica.streamlit.app/",
+    "repositorio": "samfc-netizen/dashboaard2unica-vendas",
+    "icone": "▥",
+    "destaque": true,
+    "protegido": false
+  },
+  {
+    "nome": "Comercial Dauto Tintas",
+    "descricao": "Resultados comerciais por loja, marca, produto e demais indicadores da Dauto Tintas.",
+    "categoria": "Comercial",
+    "tipo": "Dashboard",
+    "url": "https://dashdautotintas.streamlit.app/",
+    "repositorio": "samfc-netizen/dashboard-vendas",
+    "icone": "▤",
+    "destaque": true,
+    "protegido": false
+  },
+  {
+    "nome": "Dashboard de Compras",
+    "descricao": "Indicadores de compras, fornecedores, estoque, giro e apoio às decisões de abastecimento.",
+    "categoria": "Compras",
+    "tipo": "Dashboard",
+    "url": "https://comprasgrupodauto.streamlit.app/",
+    "repositorio": "samfc-netizen/INDICADOR-DE-COMPRAS",
+    "icone": "◫",
+    "protegido": false
+  },
+  {
+    "nome": "Dauto Goiânia",
+    "descricao": "Indicadores financeiros e operacionais da unidade Dauto Goiânia.",
+    "categoria": "Unidades",
+    "tipo": "Dashboard",
+    "url": "https://dautogoiania.streamlit.app/",
+    "repositorio": "samfc-netizen/DAUTO-GOI-NIA",
+    "icone": "◆",
+    "protegido": true
+  },
+  {
+    "nome": "Dauto Paracatu",
+    "descricao": "DRE e indicadores de desempenho da operação Dauto Paracatu.",
+    "categoria": "Unidades",
+    "tipo": "Dashboard",
+    "url": "https://dreparacatu.streamlit.app/",
+    "repositorio": "samfc-netizen/DRE-PARACATU",
+    "icone": "◇",
+    "protegido": true
+  },
+  {
+    "nome": "DRE e DFC Geral",
+    "descricao": "Visão consolidada da Demonstração de Resultado e do Fluxo de Caixa do Grupo Dauto.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://dreedfcgeraldauto.streamlit.app/",
+    "repositorio": "samfc-netizen/DRE-Grupo-Dauto",
+    "icone": "Σ",
+    "destaque": true,
+    "protegido": true
+  },
+  {
+    "nome": "DRE — Lojas Dauto Tintas",
+    "descricao": "Análise da DRE consolidada exclusivamente das lojas Dauto Tintas.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://dreapenaslojasdauto.streamlit.app/",
+    "repositorio": "samfc-netizen/DRE-lojas-Dauto",
+    "icone": "≋",
+    "protegido": true
+  },
+  {
+    "nome": "Dashboard de Inadimplência",
+    "descricao": "Acompanhamento de títulos em atraso, clientes e indicadores de inadimplência.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://inadimplenciagrupodautotintas.streamlit.app/",
+    "repositorio": "samfc-netizen/Inadimpencia-Dauto",
+    "icone": "!",
+    "protegido": false
+  },
+  {
+    "nome": "Painel de Fluxo de Caixa",
+    "descricao": "Projeção de entradas, saídas, saldos e necessidade diária de caixa.",
+    "categoria": "Financeiro",
+    "tipo": "Dashboard",
+    "url": "https://fluxodecaixadautotintas.streamlit.app/",
+    "repositorio": "samfc-netizen/fluxo-de-caixa-dauto-tintas",
+    "icone": "↕",
+    "destaque": true,
+    "protegido": true
+  },
+  {
+    "nome": "Pedidos Única",
+    "descricao": "Acesso ao sistema operacional de pedidos da Única Atacadista.",
+    "categoria": "Operações",
+    "tipo": "Sistema",
+    "url": "https://pedidounica.streamlit.app/",
+    "repositorio": "samfc-netizen/PEDIDOCOMPRAUNICA",
+    "icone": "→",
+    "protegido": false
+  },
+  {
+    "nome": "Pasta de Compras",
+    "descricao": "Acesso aos arquivos, relatórios e controles da área de Compras no Google Drive.",
+    "categoria": "Acessos",
+    "tipo": "Drive",
+    "url": "https://drive.google.com/drive/folders/1aXn5x2HpJj_p0UnXxSvabQ-FxWetgGV1?usp=drive_link",
+    "repositorio": "",
+    "icone": "□",
+    "protegido": false
+  },
+  {
+    "nome": "Portal Corporativo",
+    "descricao": "Ambiente corporativo centralizado da Dauto Tintas. Projeto atualmente em desenvolvimento.",
+    "categoria": "Acessos",
+    "tipo": "Portal",
+    "url": "https://dauto-tintas.web.app/",
+    "repositorio": "",
+    "icone": "◎",
+    "em_desenvolvimento": true,
+    "protegido": false
+  },
+  {
+    "nome": "Fechamento Primavia",
+    "descricao": "Ferramenta para acompanhamento e fechamento das operações Primavia.",
+    "categoria": "Ferramentas",
+    "tipo": "Ferramenta",
+    "url": "https://primaviasemaberto.streamlit.app/",
+    "repositorio": "samfc-netizen/PRIMAVIAS",
+    "icone": "✓",
+    "protegido": false
+  },
+  {
+    "nome": "Rateio de Impostos",
+    "descricao": "Ferramenta de apoio ao cálculo e rateio de impostos do Grupo Dauto.",
+    "categoria": "Ferramentas",
+    "tipo": "Ferramenta",
+    "url": "https://rateioimpostosdauto.streamlit.app/",
+    "repositorio": "samfc-netizen/Rateioimpostos",
+    "icone": "%",
+    "protegido": false
+  },
+  {
+    "nome": "Pedido de Loja",
+    "descricao": "Sistema para criação e acompanhamento dos pedidos das lojas Dauto Tintas.",
+    "categoria": "Ferramentas",
+    "tipo": "Ferramenta",
+    "url": "https://pedidolojasdauto.streamlit.app/",
+    "repositorio": "samfc-netizen/Pedidolojasdauto",
+    "icone": "+",
+    "protegido": false
+  },
+  {
+    "nome": "Aniversário Dauto Tintas",
+    "descricao": "Painel de acompanhamento da campanha de aniversário da Dauto Tintas.",
+    "categoria": "Ferramentas",
+    "tipo": "Ferramenta",
+    "url": "https://aniversariodautotintas.streamlit.app/",
+    "repositorio": "samfc-netizen/ANIVERSARIO-DAUTO-TINTAS",
+    "icone": "◇",
+    "protegido": false
+  }
+]
