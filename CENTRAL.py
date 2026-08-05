@@ -27,7 +27,7 @@ DEVELOPER_REPOSITORIES = [
     ("Dashboard Dauto Paracatu", "samfc-netizen/DRE-PARACATU"),
     ("DRE e DFC Geral", "samfc-netizen/DRE-Grupo-Dauto"),
     ("DRE – Lojas Dauto Tintas", "samfc-netizen/DRE-lojas-Dauto"),
-    ("Dashboard de Inadimplência", "samfc-netizen/Inadimpl-nciaATB"),
+    ("Dashboard de Inadimplência", "samfc-netizen/Inadimpencia-Dauto"),
     ("Painel de Fluxo de Caixa", "samfc-netizen/fluxo-de-caixa-dauto-tintas"),
     ("Pedidos Única", "samfc-netizen/PEDIDOCOMPRAUNICA"),
     ("Fechamento Primavia", "samfc-netizen/PRIMAVIAS"),
@@ -1048,7 +1048,7 @@ for start_index in range(0, len(filtered), 4):
         )
         security_html = (
             "<strong>Segurança:</strong> "
-            "🔒 Acesso com senha<br>"
+            "Acesso restrito<br>"
             if protected
             else ""
         )
