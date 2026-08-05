@@ -80,7 +80,7 @@
     "url": "https://inadimplenciagrupodautotintas.streamlit.app/",
     "repositorio": "samfc-netizen/Inadimpencia-Dauto",
     "icone": "!",
-    "protegido": true
+    "protegido": false
   },
   {
     "nome": "Painel de Fluxo de Caixa",
