@@ -3,6 +3,7 @@ import html
 import json
 import textwrap
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import quote
 
@@ -658,7 +659,7 @@ def format_date(value):
     if not value:
         return ""
     try:
-        dt = datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone()
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(ZoneInfo("America/Sao_Paulo"))
         return dt.strftime("%d/%m/%Y às %H:%M")
     except ValueError:
         return value
