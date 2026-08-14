@@ -72,22 +72,30 @@ st.markdown("""
         background: transparent;
     }
 
-    /* Esconde apenas a barra de ações do topo, não o header inteiro */
-    header[data-testid="stHeader"] [data-testid="stToolbar"] {
-        visibility: hidden;
+    /* Mantém o header funcional: o botão que reabre a sidebar pode ficar dentro
+       da área de ações do topo em versões novas do Streamlit. */
+    header[data-testid="stHeader"] {
+        visibility: visible !important;
+        display: flex !important;
+        pointer-events: auto !important;
     }
 
-    /* Garante que os controles de recolher/reabrir a sidebar continuem acessíveis */
+    /* Garante compatibilidade com diferentes versões do Streamlit para
+       recolher e, principalmente, REABRIR o menu lateral. */
     [data-testid="stSidebarCollapseButton"],
-    [data-testid="stSidebarCollapsedControl"] {
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="collapsedControl"],
+    button[kind="headerNoPadding"] {
         visibility: visible !important;
         display: flex !important;
         opacity: 1 !important;
         pointer-events: auto !important;
-        z-index: 999999 !important;
+        z-index: 9999999 !important;
     }
 
-    [data-testid="stSidebarCollapsedControl"] button {
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="collapsedControl"] button,
+    [data-testid="stSidebarCollapseButton"] button {
         visibility: visible !important;
         display: flex !important;
         opacity: 1 !important;
