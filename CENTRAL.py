@@ -63,8 +63,35 @@ st.markdown("""
         --purple: #7b45d6;
     }
 
-    #MainMenu, footer, header {
+    /* Mantém a interface limpa sem esconder o controle da sidebar */
+    #MainMenu, footer {
         visibility: hidden;
+    }
+
+    header[data-testid="stHeader"] {
+        background: transparent;
+    }
+
+    /* Esconde apenas a barra de ações do topo, não o header inteiro */
+    header[data-testid="stHeader"] [data-testid="stToolbar"] {
+        visibility: hidden;
+    }
+
+    /* Garante que os controles de recolher/reabrir a sidebar continuem acessíveis */
+    [data-testid="stSidebarCollapseButton"],
+    [data-testid="stSidebarCollapsedControl"] {
+        visibility: visible !important;
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 999999 !important;
+    }
+
+    [data-testid="stSidebarCollapsedControl"] button {
+        visibility: visible !important;
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
     }
 
     .stApp {
