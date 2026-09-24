@@ -29,7 +29,7 @@ DEVELOPER_REPOSITORIES = [
     ("DRE e DFC Geral", "samfc-netizen/DRE-Grupo-Dauto"),
     ("DRE – Lojas Dauto Tintas", "samfc-netizen/DRE-lojas-Dauto"),
     ("Dashboard de Inadimplência", "samfc-netizen/Inadimpencia-Dauto"),
-    ("Painel de Fluxo de Caixa", "samfc-netizen/fluxo-de-caixa-dauto-tintas"),
+    ("Painel Saldo de Contas/Fluxo de caixa", "samfc-netizen/SALDO-DE-CONTAS-GRUPO-DAUTO-TINTAS"),
     ("Pedidos Única", "samfc-netizen/PEDIDOCOMPRAUNICA"),
     ("Fechamento Primavia", "samfc-netizen/PRIMAVIAS"),
     ("Rateio de Impostos", "samfc-netizen/Rateioimpostos"),
@@ -770,6 +770,22 @@ def solicitar_senha_acao(
 
 
 data = load_data()
+
+# Atualiza o painel unificado de Saldo de Contas / Fluxo de Caixa.
+# O ajuste é aplicado em memória para funcionar também com dashboards.json já existente.
+for item in data:
+    nome_item = str(item.get("nome", "")).strip().lower()
+    repo_item = str(item.get("repositorio", "")).strip().lower()
+    if (
+        nome_item in {"painel de fluxo de caixa", "painel saldo de contas/fluxo de caixa"}
+        or repo_item == "samfc-netizen/fluxo-de-caixa-dauto-tintas"
+        or repo_item == "samfc-netizen/saldo-de-contas-grupo-dauto-tintas"
+    ):
+        item["nome"] = "Painel Saldo de Contas/Fluxo de caixa"
+        item["url"] = "https://saldodecontasgrupodauto.streamlit.app/"
+        item["repositorio"] = "samfc-netizen/SALDO-DE-CONTAS-GRUPO-DAUTO-TINTAS"
+        item["protegido"] = False
+
 
 dash_count = sum(x.get("tipo") == "Dashboard" for x in data)
 access_count = len(data) - dash_count
