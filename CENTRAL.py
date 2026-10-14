@@ -28,6 +28,7 @@ DEVELOPER_REPOSITORIES = [
     ("Dashboard Dauto Paracatu", "samfc-netizen/DRE-PARACATU"),
     ("DRE e DFC Geral", "samfc-netizen/DRE-Grupo-Dauto"),
     ("Dashboard de Inadimplência", "samfc-netizen/Inadimpencia-Dauto"),
+    ("Dashboard de Viagens Uber Coloristas", "samfc-netizen/ubercoloristasdauto"),
     ("Painel Saldo de Contas/ Fluxo de caixa", "samfc-netizen/SALDO-DE-CONTAS-GRUPO-DAUTO-TINTAS"),
     ("Pedidos Única", "samfc-netizen/PEDIDOCOMPRAUNICA"),
     ("Fechamento Primavia", "samfc-netizen/PRIMAVIAS"),
@@ -650,6 +651,25 @@ def load_data():
         data = json.load(f)
     if not isinstance(data, list):
         return []
+    # Painel integrado à Central, sem exigir edição manual do dashboards.json.
+    uber_panel = {
+        "nome": "Dashboard de Viagens Uber Coloristas",
+        "descricao": "Análise e detalhamento das viagens Uber dos coloristas, com origem e destino.",
+        "categoria": "Operações",
+        "tipo": "Dashboard",
+        "url": "https://viagensubercoloristas.streamlit.app/",
+        "repositorio": "samfc-netizen/ubercoloristasdauto",
+        "icone": "🚗",
+        "destaque": False,
+        "em_desenvolvimento": False,
+        "protegido": False,
+    }
+    if not any(
+        "ubercoloristasdauto" in str(item.get("repositorio", "")).lower()
+        or "viagensubercoloristas.streamlit.app" in str(item.get("url", "")).lower()
+        for item in data
+    ):
+        data.append(uber_panel)
     # Painel descontinuado: ocultar também entradas existentes no dashboards.json.
     return [
         item for item in data
