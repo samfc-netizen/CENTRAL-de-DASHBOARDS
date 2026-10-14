@@ -27,9 +27,8 @@ DEVELOPER_REPOSITORIES = [
     ("Dashboard Dauto Goiânia", "samfc-netizen/DAUTO-GOI-NIA"),
     ("Dashboard Dauto Paracatu", "samfc-netizen/DRE-PARACATU"),
     ("DRE e DFC Geral", "samfc-netizen/DRE-Grupo-Dauto"),
-    ("DRE – Lojas Dauto Tintas", "samfc-netizen/DRE-lojas-Dauto"),
     ("Dashboard de Inadimplência", "samfc-netizen/Inadimpencia-Dauto"),
-    ("Painel Saldo de Contas/Fluxo de caixa", "samfc-netizen/SALDO-DE-CONTAS-GRUPO-DAUTO-TINTAS"),
+    ("Painel Saldo de Contas/ Fluxo de caixa", "samfc-netizen/SALDO-DE-CONTAS-GRUPO-DAUTO-TINTAS"),
     ("Pedidos Única", "samfc-netizen/PEDIDOCOMPRAUNICA"),
     ("Fechamento Primavia", "samfc-netizen/PRIMAVIAS"),
     ("Rateio de Impostos", "samfc-netizen/Rateioimpostos"),
@@ -649,7 +648,15 @@ def load_data():
         return []
     with DATA_FILE.open("r", encoding="utf-8") as f:
         data = json.load(f)
-    return data if isinstance(data, list) else []
+    if not isinstance(data, list):
+        return []
+    # Painel descontinuado: ocultar também entradas existentes no dashboards.json.
+    return [
+        item for item in data
+        if "dre-lojas-dauto" not in str(item.get("repositorio", "")).lower()
+        and "dre – lojas dauto tintas" not in str(item.get("nome", "")).lower()
+        and "dre - lojas dauto tintas" not in str(item.get("nome", "")).lower()
+    ]
 
 
 @st.cache_data(ttl=900, show_spinner=False)
@@ -770,22 +777,6 @@ def solicitar_senha_acao(
 
 
 data = load_data()
-
-# Atualiza o painel unificado de Saldo de Contas / Fluxo de Caixa.
-# O ajuste é aplicado em memória para funcionar também com dashboards.json já existente.
-for item in data:
-    nome_item = str(item.get("nome", "")).strip().lower()
-    repo_item = str(item.get("repositorio", "")).strip().lower()
-    if (
-        nome_item in {"painel de fluxo de caixa", "painel saldo de contas/fluxo de caixa"}
-        or repo_item == "samfc-netizen/fluxo-de-caixa-dauto-tintas"
-        or repo_item == "samfc-netizen/saldo-de-contas-grupo-dauto-tintas"
-    ):
-        item["nome"] = "Painel Saldo de Contas/Fluxo de caixa"
-        item["url"] = "https://saldodecontasgrupodauto.streamlit.app/"
-        item["repositorio"] = "samfc-netizen/SALDO-DE-CONTAS-GRUPO-DAUTO-TINTAS"
-        item["protegido"] = False
-
 
 dash_count = sum(x.get("tipo") == "Dashboard" for x in data)
 access_count = len(data) - dash_count
@@ -1031,13 +1022,13 @@ st.caption(f"{len(filtered)} item(ns) disponível(is).")
 if not filtered:
     st.info("Nenhum item corresponde aos filtros selecionados.")
 
+# Grade responsiva: a última linha ocupa a largura disponível,
+# sem deixar espaços vazios após a retirada de um painel.
 for start_index in range(0, len(filtered), 4):
-    cols = st.columns(4, gap="medium")
+    row_items = filtered[start_index:start_index + 4]
+    cols = st.columns(len(row_items), gap="medium")
 
-    for col, item in zip(
-        cols,
-        filtered[start_index:start_index + 4],
-    ):
+    for col, item in zip(cols, row_items):
         name = str(item.get("nome", "Acesso"))
         description = str(item.get("descricao", ""))
         category_name = str(item.get("categoria", "Outros"))
